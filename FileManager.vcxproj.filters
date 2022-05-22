@@ -9,14 +9,72 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Файлы ресурсов">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="FileManager">
+      <UniqueIdentifier>{880b17fc-3e9b-41ae-ae94-c5e07da8c9fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TextEditor">
+      <UniqueIdentifier>{f62f5893-f612-466b-8977-c1e1fa5db98b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Run">
+      <UniqueIdentifier>{58692240-b5b1-4a99-a760-35798bf1ebd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{5d21f5c1-4917-477f-9d50-a30d05ba0f8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Directory">
+      <UniqueIdentifier>{c1771bdf-8cb6-4186-a88b-a6a720a45be1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entering">
+      <UniqueIdentifier>{04056dd5-4328-4279-813a-edad776efa9b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FileManager.cpp">
+    <ClCompile Include="Main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Manager.cpp">
+      <Filter>FileManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Run.cpp">
+      <Filter>Run</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>TextEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="Directory.cpp">
+      <Filter>Directory</Filter>
+    </ClCompile>
+    <ClCompile Include="Entering.cpp">
+      <Filter>Entering</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Manager.h">
+      <Filter>FileManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Run.h">
+      <Filter>Run</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>TextEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Includes.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="Directory.h">
+      <Filter>Directory</Filter>
+    </ClInclude>
+    <ClInclude Include="Entering.h">
+      <Filter>Entering</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

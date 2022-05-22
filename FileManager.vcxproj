@@ -139,9 +139,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FileManager.cpp" />
+    <ClCompile Include="Directory.cpp" />
+    <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="Entering.cpp" />
+    <ClCompile Include="File.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Manager.cpp" />
+    <ClCompile Include="Run.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Directory.h" />
+    <ClInclude Include="Editor.h" />
+    <ClInclude Include="Entering.h" />
+    <ClInclude Include="File.h" />
+    <ClInclude Include="Includes.h" />
+    <ClInclude Include="Manager.h" />
+    <ClInclude Include="Run.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\boost.1.79.0\build\boost.targets" Condition="Exists('packages\boost.1.79.0\build\boost.targets')" />
+    <Import Project="packages\boost_filesystem-vc143.1.79.0\build\boost_filesystem-vc143.targets" Condition="Exists('packages\boost_filesystem-vc143.1.79.0\build\boost_filesystem-vc143.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\boost.1.79.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost.1.79.0\build\boost.targets'))" />
+    <Error Condition="!Exists('packages\boost_filesystem-vc143.1.79.0\build\boost_filesystem-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost_filesystem-vc143.1.79.0\build\boost_filesystem-vc143.targets'))" />
+  </Target>
 </Project>
