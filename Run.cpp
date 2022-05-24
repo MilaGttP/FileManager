@@ -6,11 +6,11 @@
 #include "Run.h"
 using namespace std;
 
-HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); // used for goto
-COORD CursorPosition; // used for goto
+HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE); 
+COORD CursorPosition;
 FileManager fileManager;
 
-void gotoXY(int, int); // function defined below if this is new to you.
+void gotoXY(int, int);
 
 void Run()
 {
@@ -23,14 +23,14 @@ void Run()
 	while (running)
 	{
 		gotoXY(20, 7);  cout << "Create dir";
-		gotoXY(20, 8);  cout << "Rename";
-		gotoXY(20, 9);  cout << "Show dir";
-		gotoXY(20, 10); cout << "Delete";
+		gotoXY(20, 8);  cout << "Show dir";
+		gotoXY(20, 9);  cout << "Move dir";
+		gotoXY(20, 10); cout << "Copy dir";
 		gotoXY(20, 11); cout << "Exit";
 
-		system("pause>nul"); // the >nul bit causes it the print no message
+		system("pause>nul");
 
-		if (GetAsyncKeyState(VK_DOWN) && x != 11) //down button pressed
+		if (GetAsyncKeyState(VK_DOWN) && x != 11)
 		{
 			gotoXY(18, x); cout << "  ";
 			x++;
@@ -40,7 +40,7 @@ void Run()
 
 		}
 
-		if (GetAsyncKeyState(VK_UP) && x != 7) //up button pressed
+		if (GetAsyncKeyState(VK_UP) && x != 7) 
 		{
 			gotoXY(18, x); cout << "  ";
 			x--;
@@ -49,7 +49,7 @@ void Run()
 			continue;
 		}
 
-		if (GetAsyncKeyState(VK_RETURN)) { // Enter key pressed
+		if (GetAsyncKeyState(VK_RETURN)) { 
 
 			switch (menu_item) {
 
@@ -63,19 +63,19 @@ void Run()
 
 			case 1: {
 				gotoXY(20, 16);
-				fileManager.Rename();
+				fileManager.ShowDir();
 				break;
 			}
 
 			case 2: {
 				gotoXY(20, 16);
-				fileManager.ShowDir();
+				fileManager.MoveDir();
 				break;
 			}
 
 			case 3: {
 				gotoXY(20, 16);
-				fileManager.Delete();
+				fileManager.CopyDir();
 				break;
 			}
 

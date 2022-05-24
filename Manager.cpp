@@ -1,58 +1,14 @@
 
 #include "Manager.h"
 #include "Includes.h"
+#include <boost/filesystem.hpp>
 using namespace std;
 using namespace boost;
+namespace fs = boost::filesystem;
 
+//------------* MAIN FUNC *----------------------
 
-//------------* Main Func *----------------------
-
-void FileManager::ShowDir()
-{
-    string buff = EnterPath();
-    boost::filesystem::directory_iterator begin(buff);
-    boost::filesystem::directory_iterator end;
-    boost::filesystem::path path;
-    cout << "\t" << left << setfill(' ') << setw(45) << "Filename"
-        << "Size" << right << setfill(' ') << setw(45) << "Type" << endl;
-    for (; begin != end; ++begin)
-    {
-        boost::filesystem::file_status fs = boost::filesystem::status(*begin);
-        path = *begin;
-        cout << left << setw(50) << path.filename().string();
-        switch (fs.type())
-        {
-        case boost::filesystem::regular_file:
-            cout << HumanReadable { file_size(*begin) } << right << setw(45) << "FILE" << endl;
-            break;
-        case boost::filesystem::symlink_file:
-            cout << HumanReadable { SizeOf(*begin) } << right << setw(45) << "SYMLINK" << endl;
-            break;
-        case boost::filesystem::directory_file:
-            cout << HumanReadable { SizeOf(*begin) } << right << setw(45) << "DIRECTORY" << endl;
-            break;
-        default:
-            cout << HumanReadable { SizeOf(*begin) } << right << setw(45) << "OTHER" << endl;
-            break;
-        }
-    }
-}
-
-void FileManager::CreateDir()
-{
-    string path = EnterPath();
-    dir.SetPath(path);
-    string name = EnterName();
-    dir.SetName(name);
-    boost::system::error_code error;
-    boost::filesystem::create_directories(dir.GetPath() + '/' + dir.GetName(), error);
-    assert(!error);
-}
-
-void FileManager::CreatingFile()
-{
-
-}
+    //1------------* Common *--------------------
 
 void FileManager::Rename()
 {
@@ -84,11 +40,26 @@ void FileManager::Rename()
         }
         }
     }
-    catch (boost::filesystem::filesystem_error const& e)
+    catch (fs::filesystem_error const& e)
     {
         cout << e.what() << endl;
         std::system("pause");
     }
+}
+
+void FileManager::SortByName()
+{
+
+}
+
+void FileManager::SortBySize()
+{
+
+}
+
+void FileManager::SortByType()
+{
+
 }
 
 void FileManager::Delete()
@@ -98,45 +69,204 @@ void FileManager::Delete()
     cout << "What item will you delete?" << endl;
     cout << "\t1 - Directory" << endl;
     cout << "\t2 - File" << endl;
-    cout << "\tYour choice: "; cin >> tmp;
-    cin.ignore();
-    path = EnterPath();
-    name = EnterName();
+    cout << "\tYour choice: ";
+    cin >> tmp;
     try
     {
         switch (tmp)
         {
         case 1:
         {
-            DeleteDir(path, name);
+            cin.ignore();
+            path = EnterPath();
+            DeleteDir(path);
             break;
         }
         case 2:
         {
+            cin.ignore();
+            path = EnterPath();
+            name = EnterName();
             DeletingFile(path, name);
             break;
         }
         }
     }
-    catch (boost::filesystem::filesystem_error const& e)
+    catch (fs::filesystem_error const& e)
     {
         cout << e.what() << endl;
         std::system("pause");
     }
 }
 
+    //2-----------* For Directories *------------------
+
+void FileManager::ShowDir()
+{
+    string buff = EnterPath();
+    fs::directory_iterator begin(buff);
+    fs::directory_iterator end;
+    fs::path tmp;
+    cout << "\t" << left << setfill(' ') << setw(42) << "* FileName *"
+        << "* Size *" << right << setfill(' ') << setw(28) << "* Type *" << endl << endl;
+    for (; begin != end; ++begin)
+    {
+        fs::file_status fs = fs::status(*begin);
+        tmp = *begin;
+        cout << left << setw(50) << tmp.filename().string();
+        switch (fs.type())
+        {
+        case fs::regular_file:
+            cout << HumanReadable { file_size(*begin) } << right << setw(30) << "FILE" << endl;
+            break;
+        case fs::symlink_file:
+            cout << HumanReadable { SizeOf(*begin) } << right << setw(30) << "SYMLINK" << endl;
+            break;
+        case fs::directory_file:
+            cout << HumanReadable { SizeOf(*begin) } << right << setw(30) << "DIRECTORY" << endl;
+            break;
+        default:
+            cout << HumanReadable { SizeOf(*begin) } << right << setw(30) << "OTHER" << endl;
+            break;
+        }
+    }
+}
+
+void FileManager::CreateDir()
+{
+    string path = EnterPath();
+    dir.SetPath(path);
+    string name = EnterName();
+    dir.SetName(name);
+    boost::system::error_code error;
+    fs::create_directories(dir.GetPath() + '/' + dir.GetName(), error);
+    assert(!error);
+}
+
+void FileManager::CopyDir()
+{
+    string source = EnterPath();
+    string destination = EnterPath();
+    try
+    {
+        if (!fs::exists(source) ||
+            !fs::is_directory(source))
+        {
+            cerr << "Source directory " << source
+                << " does not exist or is not a directory." << '\n';
+        }
+
+        if (fs::exists(destination))
+        {
+            cerr << "Destination directory " << destination << " already exists." << '\n';
+        }
+
+        if (!fs::create_directory(destination))
+        {
+            cerr << "Unable to create destination directory"
+                << destination << '\n';
+        }
+    }
+    catch (fs::filesystem_error const& e)
+    {
+        cerr << e.what() << '\n';
+    }
+
+    CopyingDir(source, destination);
+}
+
+void FileManager::MoveDir()
+{
+    string source = EnterPath();
+    string destination = EnterPath();
+    try
+    {
+        if (!fs::exists(source) ||
+            !fs::is_directory(source))
+        {
+            cerr << "Source directory " << source
+                << " does not exist or is not a directory." << '\n';
+        }
+
+        if (fs::exists(destination))
+        {
+            cerr << "Destination directory " << destination << " already exists." << '\n';
+        }
+
+        if (!fs::create_directory(destination))
+        {
+            cerr << "Unable to create destination directory"
+                << destination << '\n';
+        }
+    }
+    catch (fs::filesystem_error const& e)
+    {
+        cerr << e.what() << '\n';
+    }
+
+    CopyingDir(source, destination);
+    DeleteDir(source);
+}
+
+    //3-----------* For Files *------------------
+
+
+void FileManager::CreatingFile()
+{
+    string name = EnterName();
+    fstream stream;
+    stream.open(name, ios::out);
+    if (stream.is_open())
+    {
+        stream.close();
+        cout << "Created" << endl;
+    }
+}
+
+void FileManager::CopyingFile()
+{
+    string source = EnterPath();
+    string destination = EnterPath();
+    string name = EnterName();
+    try
+    {
+        if (!fs::exists(source) || !fs::is_regular_file(name))
+        {
+            cerr << "Source file " << source
+                << " does not exist or is not a file." << '\n';
+        }
+        if (!fs::exists(destination))
+        {
+            cerr << "Destination directory " << destination << " haven`t already exists." << '\n';
+        }
+        /*else
+        {
+            fs::copy_file()
+        }*/
+    }
+    catch (fs::filesystem_error const& e)
+    {
+        cerr << e.what() << '\n';
+    }
+}
+
+void FileManager::MovingFile()
+{
+
+}
+
+
 
 //------------* Auxiliary Func *----------------------
 
-uint32_t FileManager::SizeOf(boost::filesystem::path path)
+uint32_t FileManager::SizeOf(fs::path path)
 {
     size_t size = 0;
-    for (boost::filesystem::recursive_directory_iterator it(path);
-        it != boost::filesystem::recursive_directory_iterator();
-        ++it)
+    for (fs::recursive_directory_iterator it(path);
+        it != fs::recursive_directory_iterator(); ++it)
     {
-        if (!boost::filesystem::is_directory(*it))
-            size += boost::filesystem::file_size(*it);
+        if (!fs::is_directory(*it))
+            size += fs::file_size(*it);
     }
     return size;
 }
@@ -157,34 +287,52 @@ string FileManager::EnterName()
     return name;
 }
 
+void FileManager::CopyingDir(fs::path const& source, fs::path const& destination)
+{
+    for (fs::directory_iterator file(source); file != fs::directory_iterator(); ++file)
+    {
+        try
+        {
+            fs::path current(file->path());
+            if (fs::is_directory(current))
+                fs::copy_directory(current, destination / current.filename());
+            else
+                fs::copy_file(current, destination / current.filename());
+        }
+        catch (fs::filesystem_error const& e)
+        {
+            cerr << e.what() << '\n';
+        }
+    }
+}
+
 void FileManager::RenameDir(string path, string oldName, string newName)
 {
     dir.SetPath(path);
-    if (boost::filesystem::exists(dir.GetPath() + '/' + oldName))
-        boost::filesystem::rename(dir.GetPath() + '/' + oldName, dir.GetPath() + '/' + newName);
+    if (fs::exists(dir.GetPath() + '/' + oldName))
+        fs::rename(dir.GetPath() + '/' + oldName, dir.GetPath() + '/' + newName);
 }
 
 void FileManager::RenameFile(string path, string oldName, string newName)
 {
     file.SetPath(path);
-    if (boost::filesystem::exists(file.GetPath() + '/' + oldName))
-        boost::filesystem::rename(file.GetPath() + '/' + oldName, file.GetPath() + '/' + newName);
+    if (fs::exists(file.GetPath() + '/' + oldName))
+        fs::rename(file.GetPath() + '/' + oldName, file.GetPath() + '/' + newName);
 }
 
-void FileManager::DeleteDir(string path, string name)
+void FileManager::DeleteDir(string path)
 {
     dir.SetPath(path);
-    dir.SetName(name);
-    if (boost::filesystem::exists(dir.GetPath() + '/' + dir.GetName()))
-        boost::filesystem::remove_all(dir.GetPath() + '/' + dir.GetName());
+    if (fs::exists(dir.GetPath()))
+        fs::remove_all(dir.GetPath());
 }
 
 void FileManager::DeletingFile(string path, string name)
 {
     file.SetPath(path);
     file.SetName(name);
-    if (boost::filesystem::exists(file.GetPath() + '/' + file.GetName()))
-        boost::filesystem::remove_all(file.GetPath() + '/' + file.GetName());
+    if (fs::exists(file.GetPath() + '/' + file.GetName()))
+        fs::remove_all(file.GetPath() + '/' + file.GetName());
 }
 
 

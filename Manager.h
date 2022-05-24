@@ -19,6 +19,7 @@ public:
 	void Rename();
 	void SortByName();
 	void SortBySize();
+	void SortByType();
 	void Delete();
 
 	//2-----------* For Directories *--------
@@ -27,7 +28,6 @@ public:
 	void CreateDir();
 	void CopyDir();
 	void MoveDir();
-
 
 	//3-----------* For Files *--------------
 
@@ -42,9 +42,10 @@ public:
 	uint32_t SizeOf(boost::filesystem::path path);
 	string EnterPath();
 	string EnterName();
+	void CopyingDir(boost::filesystem::path const& source, boost::filesystem::path const& destination);
 	void RenameDir(string path, string oldName, string newName);
 	void RenameFile(string path, string oldName, string newName);
-	void DeleteDir(string path, string name);
+	void DeleteDir(string path);
 	void DeletingFile(string path, string name);
 };
 
