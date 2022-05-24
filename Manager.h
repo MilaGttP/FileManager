@@ -1,14 +1,15 @@
 
 #pragma once
 #include <boost/filesystem/operations.hpp>
-#include "File.h"
-#include "Directory.h"
+using std::string;
 
 class FileManager
 {
 protected:
-	File file;
-	Dir dir;
+	string path;
+	string name;
+	string source;
+	string destination;
 public:
 
 	//------------* MAIN FUNC *---------
@@ -40,13 +41,8 @@ public:
 	//------------* AUXILIARY FUNC *----------
 
 	uint32_t SizeOf(boost::filesystem::path path);
-	string EnterPath();
-	string EnterName();
 	void CopyingDir(boost::filesystem::path const& source, boost::filesystem::path const& destination);
-	void RenameDir(string path, string oldName, string newName);
-	void RenameFile(string path, string oldName, string newName);
-	void DeleteDir(string path);
-	void DeletingFile(string path, string name);
+	void CopingFile(string source, string name, string destination);
 };
 
 

@@ -139,19 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Directory.cpp" />
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="Entering.cpp" />
-    <ClCompile Include="File.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Run.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Directory.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="Entering.h" />
-    <ClInclude Include="File.h" />
     <ClInclude Include="Includes.h" />
     <ClInclude Include="Manager.h" />
     <ClInclude Include="Run.h" />

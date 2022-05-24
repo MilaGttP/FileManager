@@ -6,39 +6,28 @@ using namespace std;
 using namespace boost;
 namespace fs = boost::filesystem;
 
-//------------* MAIN FUNC *----------------------
 
-    //1------------* Common *--------------------
+//------------------* MAIN FUNC *----------------------
+
+    //1---------------* Common *--------------------
 
 void FileManager::Rename()
 {
-    string oldName, newName, path;
+    string oldName, newName;
     uint32_t tmp;
-    cout << "What item will you rename?" << endl;
-    cout << "\t1 - Directory" << endl;
-    cout << "\t2 - File" << endl;
-    cout << "\tYour choice: "; cin >> tmp;
     cin.ignore();
-    path = EnterPath();
+    cout << "Enter path for renaming item: ";
+    getline(cin, path);
     cout << "Enter old name: ";
     getline(cin, oldName);
     cout << "Enter new name: ";
     getline(cin, newName);
     try
     {
-        switch (tmp)
-        {
-        case 1:
-        {
-            RenameDir(path, oldName, newName);
-            break;
-        }
-        case 2:
-        {
-            RenameFile(path, oldName, newName);
-            break;
-        }
-        }
+        if (!fs::exists(path) || !fs::is_directory(path))
+            cerr << "Path " << path << " does not exist or is not a directory." << '\n';
+        if (fs::exists(path + '/' + oldName))
+            fs::rename(path + '/' + oldName, path + '/' + newName);
     }
     catch (fs::filesystem_error const& e)
     {
@@ -64,7 +53,6 @@ void FileManager::SortByType()
 
 void FileManager::Delete()
 {
-    string name, path;
     uint32_t tmp;
     cout << "What item will you delete?" << endl;
     cout << "\t1 - Directory" << endl;
@@ -78,16 +66,21 @@ void FileManager::Delete()
         case 1:
         {
             cin.ignore();
-            path = EnterPath();
-            DeleteDir(path);
+            cout << "Enter path for delete: ";
+            getline(cin, path);
+            if (fs::exists(path))
+                fs::remove_all(path);            
             break;
         }
         case 2:
         {
             cin.ignore();
-            path = EnterPath();
-            name = EnterName();
-            DeletingFile(path, name);
+            cout << "Enter path for delete: ";
+            getline(cin, path);            
+            cout << "Enter file name for delete: ";
+            getline(cin, name);
+            if (fs::exists(path + '/' + name))
+                fs::remove_all(path + '/' + name);
             break;
         }
         }
@@ -99,12 +92,14 @@ void FileManager::Delete()
     }
 }
 
-    //2-----------* For Directories *------------------
+    //2-------------* For Directories *------------------
 
 void FileManager::ShowDir()
 {
-    string buff = EnterPath();
-    fs::directory_iterator begin(buff);
+    string source;
+    cout << "Enter path of directory, what you want to show: ";
+    getline(cin, source);
+    fs::directory_iterator begin(source);
     fs::directory_iterator end;
     fs::path tmp;
     cout << "\t" << left << setfill(' ') << setw(42) << "* FileName *"
@@ -134,130 +129,71 @@ void FileManager::ShowDir()
 
 void FileManager::CreateDir()
 {
-    string path = EnterPath();
-    dir.SetPath(path);
-    string name = EnterName();
-    dir.SetName(name);
-    boost::system::error_code error;
-    fs::create_directories(dir.GetPath() + '/' + dir.GetName(), error);
-    assert(!error);
+    cout << "Enter path for creating directory: ";
+    getline(cin, path);
+    cout << "Enter directory name: ";
+    getline(cin, name);
+    fs::create_directories(path + '/' + name);
 }
 
 void FileManager::CopyDir()
 {
-    string source = EnterPath();
-    string destination = EnterPath();
-    try
-    {
-        if (!fs::exists(source) ||
-            !fs::is_directory(source))
-        {
-            cerr << "Source directory " << source
-                << " does not exist or is not a directory." << '\n';
-        }
-
-        if (fs::exists(destination))
-        {
-            cerr << "Destination directory " << destination << " already exists." << '\n';
-        }
-
-        if (!fs::create_directory(destination))
-        {
-            cerr << "Unable to create destination directory"
-                << destination << '\n';
-        }
-    }
-    catch (fs::filesystem_error const& e)
-    {
-        cerr << e.what() << '\n';
-    }
-
+    cout << "Enter source path: ";
+    getline(cin, source);
+    cout << "Enter destination path: ";
+    getline(cin, destination);
     CopyingDir(source, destination);
 }
 
 void FileManager::MoveDir()
 {
-    string source = EnterPath();
-    string destination = EnterPath();
-    try
-    {
-        if (!fs::exists(source) ||
-            !fs::is_directory(source))
-        {
-            cerr << "Source directory " << source
-                << " does not exist or is not a directory." << '\n';
-        }
-
-        if (fs::exists(destination))
-        {
-            cerr << "Destination directory " << destination << " already exists." << '\n';
-        }
-
-        if (!fs::create_directory(destination))
-        {
-            cerr << "Unable to create destination directory"
-                << destination << '\n';
-        }
-    }
-    catch (fs::filesystem_error const& e)
-    {
-        cerr << e.what() << '\n';
-    }
-
+    cout << "Enter source path: ";
+    getline(cin, source);
+    cout << "Enter destination path: ";
+    getline(cin, destination);
     CopyingDir(source, destination);
-    DeleteDir(source);
+    fs::remove_all(source);
 }
 
-    //3-----------* For Files *------------------
+    //3-------------* For Files *------------------
 
 
 void FileManager::CreatingFile()
 {
-    string name = EnterName();
+    cout << "Enter name of new file: ";
+    getline(cin, name);
     fstream stream;
     stream.open(name, ios::out);
     if (stream.is_open())
-    {
         stream.close();
-        cout << "Created" << endl;
-    }
 }
 
 void FileManager::CopyingFile()
 {
-    string source = EnterPath();
-    string destination = EnterPath();
-    string name = EnterName();
-    try
-    {
-        if (!fs::exists(source) || !fs::is_regular_file(name))
-        {
-            cerr << "Source file " << source
-                << " does not exist or is not a file." << '\n';
-        }
-        if (!fs::exists(destination))
-        {
-            cerr << "Destination directory " << destination << " haven`t already exists." << '\n';
-        }
-        /*else
-        {
-            fs::copy_file()
-        }*/
-    }
-    catch (fs::filesystem_error const& e)
-    {
-        cerr << e.what() << '\n';
-    }
+    cout << "Enter source path: ";
+    getline(cin, source);
+    cout << "Enter name of file: ";
+    getline(cin, name);
+    cout << "Enter destination path: ";
+    getline(cin, destination);
+    CopingFile(source, name, destination);
 }
 
 void FileManager::MovingFile()
 {
-
+    cout << "Enter source path: ";
+    getline(cin, source);
+    cout << "Enter name of file: ";
+    getline(cin, name);
+    cout << "Enter destination path: ";
+    getline(cin, destination);
+    CopingFile(source, name, destination);
+    fs::remove_all(source + '/' + name);
 }
 
 
 
-//------------* Auxiliary Func *----------------------
+//-------------------* AUXILIARY FUNC *---------------------
 
 uint32_t FileManager::SizeOf(fs::path path)
 {
@@ -271,24 +207,23 @@ uint32_t FileManager::SizeOf(fs::path path)
     return size;
 }
 
-string FileManager::EnterPath()
-{
-    string path;
-    cout << "Enter path: ";
-    getline(cin, path);
-    return path;
-}
-
-string FileManager::EnterName()
-{
-    string name;
-    cout << "Enter name: ";
-    getline(cin, name);
-    return name;
-}
-
 void FileManager::CopyingDir(fs::path const& source, fs::path const& destination)
 {
+    try
+    {
+        if (!fs::exists(source) || !fs::is_directory(source))
+            cerr << "Source directory " << source << " does not exist or is not a directory." << '\n';
+
+        if (fs::exists(destination))
+            cerr << "Destination directory " << destination << " already exists." << '\n';
+
+        if (!fs::create_directory(destination))
+            cerr << "Unable to create destination directory" << destination << '\n';
+    }
+    catch (fs::filesystem_error const& e)
+    {
+        cerr << e.what() << '\n';
+    }
     for (fs::directory_iterator file(source); file != fs::directory_iterator(); ++file)
     {
         try
@@ -306,38 +241,34 @@ void FileManager::CopyingDir(fs::path const& source, fs::path const& destination
     }
 }
 
-void FileManager::RenameDir(string path, string oldName, string newName)
+void FileManager::CopingFile(string source, string name, string destination)
 {
-    dir.SetPath(path);
-    if (fs::exists(dir.GetPath() + '/' + oldName))
-        fs::rename(dir.GetPath() + '/' + oldName, dir.GetPath() + '/' + newName);
-}
-
-void FileManager::RenameFile(string path, string oldName, string newName)
-{
-    file.SetPath(path);
-    if (fs::exists(file.GetPath() + '/' + oldName))
-        fs::rename(file.GetPath() + '/' + oldName, file.GetPath() + '/' + newName);
-}
-
-void FileManager::DeleteDir(string path)
-{
-    dir.SetPath(path);
-    if (fs::exists(dir.GetPath()))
-        fs::remove_all(dir.GetPath());
-}
-
-void FileManager::DeletingFile(string path, string name)
-{
-    file.SetPath(path);
-    file.SetName(name);
-    if (fs::exists(file.GetPath() + '/' + file.GetName()))
-        fs::remove_all(file.GetPath() + '/' + file.GetName());
+    try
+    {
+        if (!fs::exists(source))
+            cerr << "Source directory " << source << " does not exist or is not a directory." << '\n';
+        if (!fs::exists(source + '/' + name) || !fs::is_regular_file(source + '/' + name))
+            cerr << "Source file " << source + '/' + name << " does not exist or is not a file." << '\n';
+        if (!fs::exists(destination))
+        {
+            string buff;
+            cout << "You haven`t such a directory! Enter wanted path and name to create it: ";
+            getline(cin, buff);
+            fs::create_directories(buff);
+        }
+        else
+            fs::copy_file(source + '/' + name, destination + '/' + name);
+    }
+    catch (fs::filesystem_error const& e)
+    {
+        cerr << e.what() << '\n';
+    }
 }
 
 
 
-//-------------* For FileManager *-------------------
+
+//----------------* FOR FILEMANAGER *------------------
 
 ostream& operator << (ostream& os, HumanReadable hr)
 {
