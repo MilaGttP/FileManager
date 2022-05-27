@@ -13,11 +13,11 @@ protected:
 public:
 
 	//------------* MAIN FUNC *---------
-
 	
 	//1------------* Common *------------
 
 	void Rename();
+	void SearchByName();
 	void SortByName();
 	void SortBySize();
 	void SortByType();
@@ -41,6 +41,7 @@ public:
 	//------------* AUXILIARY FUNC *----------
 
 	uint32_t SizeOf(boost::filesystem::path path);
+	void ShowingDir(boost::filesystem::path source);
 	void CopyingDir(boost::filesystem::path const& source, boost::filesystem::path const& destination);
 	void CopingFile(string source, string name, string destination);
 };
@@ -57,4 +58,3 @@ private:
 public:
 	uintmax_t size{};
 };
-
