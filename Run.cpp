@@ -34,9 +34,6 @@ void OutFunc()
 	gotoXY(15, 15); cout << "Show file";
 	gotoXY(15, 16); cout << "Append file";
 	gotoXY(15, 17); cout << "Rewrite file";
-	gotoXY(15, 18); cout << "Sort by name";
-	gotoXY(15, 19); cout << "Sort by type";
-	gotoXY(15, 20); cout << "Sort by size";
 }
 
 void Run()
@@ -58,7 +55,7 @@ void Run()
 		    menu_item--;
 		    continue;
 		}
-		else if (GetAsyncKeyState(VK_DOWN) && x != 20)
+		else if (GetAsyncKeyState(VK_DOWN) && x != 17)
 		{
 			gotoXY(12, x); cout << "  ";
 			x++;
@@ -88,95 +85,102 @@ void Run()
 			}
 			case 2: 
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);				
 				fileManager.CreateDir();
+				system("cls");
 				break;
 			}
 			case 3: 
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				fileManager.CopyDir();
+				system("cls");
 				break;
 			}
 			case 4: 
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				fileManager.MoveDir();
+				system("cls");
 				break;
 			}
 			case 5:
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				fileManager.CreatingFile();
+				system("cls");
 				break;
 			}
 			case 6:
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				fileManager.CopyingFile();
+				system("cls");
 				break;
 			}
 			case 7:
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				fileManager.MovingFile();
+				system("cls");
 				break;
 			}
 			case 8:
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				fileManager.SearchByName();
+				system("pause");
+				system("cls");
 				break;
 			}
 			case 9:
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				fileManager.Rename();
+				system("cls");
 				break;
 			}
 			case 10:
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				fileManager.Delete();
+				system("cls");
 				break;
 			}
 			case 11:
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				textEditor.ShowFile();
+				system("pause");
+				system("cls");
 				break;
 			}
 			case 12:
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				textEditor.Append();
+				system("cls");
 				break;
 			}
 			case 13:
 			{
-				gotoXY(20, 22);
+				system("cls");
+				gotoXY(4, 2);
 				textEditor.Rewrite();
+				system("cls");
 				break;
 			}
-			case 14:
-			{
-				gotoXY(20, 22);
-				fileManager.SortByName();
-				break;
-			}
-			case 15:
-			{
-				gotoXY(20, 22);
-				fileManager.SortByType();
-				break;
-			}
-			case 16:
-			{
-				gotoXY(20, 22);
-				fileManager.SortBySize();
-				break;
-			}
-
 			}
 		}
 	}

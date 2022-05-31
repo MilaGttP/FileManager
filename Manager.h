@@ -16,11 +16,8 @@ public:
 	
 	//1------------* Common *------------
 
-	void Rename();
 	void SearchByName();
-	void SortByName();
-	void SortBySize();
-	void SortByType();
+	void Rename();
 	void Delete();
 
 	//2-----------* For Directories *--------

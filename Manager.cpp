@@ -3,7 +3,6 @@
 #include "Editor.h"
 #include "Includes.h"
 using namespace std;
-using namespace boost;
 namespace fs = boost::filesystem;
 
 
@@ -11,36 +10,11 @@ namespace fs = boost::filesystem;
 
     //1---------------* Common *--------------------
 
-void FileManager::Rename()
-{
-    string oldName, newName;
-    uint32_t tmp;
-    cin.ignore();
-    cout << "Enter path for renaming item: ";
-    getline(cin, path);
-    cout << "Enter old name: ";
-    getline(cin, oldName);
-    cout << "Enter new name: ";
-    getline(cin, newName);
-    try
-    {
-        if (!fs::exists(path) || !fs::is_directory(path))
-            cerr << "Path " << path << " does not exist or is not a directory." << '\n';
-        else if (fs::exists(path + '/' + oldName))
-            fs::rename(path + '/' + oldName, path + '/' + newName);
-    }
-    catch (fs::filesystem_error const& e)
-    {
-        cout << e.what() << endl;
-        std::system("pause");
-    }
-}
-
 void FileManager::SearchByName()
 {
     cout << "Enter path of directory, in which you search item: ";
     getline(cin, source);
-    cout << "Enter item`s name: ";
+    cout << "\tEnter item`s name: ";
     getline(cin, name);
     try
     {
@@ -62,19 +36,33 @@ void FileManager::SearchByName()
     }
 }
 
-void FileManager::SortByName()
+void FileManager::Rename()
 {
-
-}
-
-void FileManager::SortBySize()
-{
-
-}
-
-void FileManager::SortByType()
-{
-
+     cout << "What item will you delete?" << endl;
+     cout << "\t1 - Directory" << endl;
+     cout << "\t2 - File" << endl;
+     cout << "\tYour choice: ";
+    cin.ignore(); cin.ignore();
+    cout << "Enter path for renaming: ";
+    getline(cin, path);
+    string oldName, newName;
+    uint32_t tmp;
+    cout << "\tEnter old name: ";
+    getline(cin, oldName);
+    cout << "\tEnter new name: ";
+    getline(cin, newName);
+    try
+    {
+        if (!fs::exists(path) || !fs::is_directory(path))
+            cerr << "Path " << path << " does not exist or is not a directory." << '\n';
+        else if (fs::exists(path + '/' + oldName))
+            fs::rename(path + '/' + oldName, path + '/' + newName);
+    }
+    catch (fs::filesystem_error const& e)
+    {
+        cout << e.what() << endl;
+        std::system("pause");
+    }
 }
 
 void FileManager::Delete()
@@ -92,7 +80,7 @@ void FileManager::Delete()
         case 1:
         {
             cin.ignore();
-            cout << "Enter path for delete: ";
+            cout << "\tEnter path for delete: ";
             getline(cin, path);
             if (fs::exists(path))
                 fs::remove_all(path);
@@ -101,9 +89,9 @@ void FileManager::Delete()
         case 2:
         {
             cin.ignore();
-            cout << "Enter path for delete: ";
+            cout << "\tEnter path for delete: ";
             getline(cin, path);
-            cout << "Enter file name for delete: ";
+            cout << "\tEnter file name for delete: ";
             getline(cin, name);
             if (fs::exists(path + '/' + name))
                 fs::remove_all(path + '/' + name);
@@ -131,7 +119,7 @@ void FileManager::CreateDir()
 {
     cout << "Enter path for creating directory: ";
     getline(cin, path);
-    cout << "Enter directory name: ";
+    cout << "\tEnter directory name: ";
     getline(cin, name);
     fs::create_directories(path + '/' + name);
 }
@@ -140,7 +128,7 @@ void FileManager::CopyDir()
 {
     cout << "Enter source path: ";
     getline(cin, source);
-    cout << "Enter destination path: ";
+    cout << "\tEnter destination path: ";
     getline(cin, destination);
     CopyingDir(source, destination);
 }
@@ -149,7 +137,7 @@ void FileManager::MoveDir()
 {
     cout << "Enter source path: ";
     getline(cin, source);
-    cout << "Enter destination path: ";
+    cout << "\tEnter destination path: ";
     getline(cin, destination);
     CopyingDir(source, destination);
     fs::remove_all(source);
@@ -171,9 +159,9 @@ void FileManager::CopyingFile()
 {
     cout << "Enter source path: ";
     getline(cin, source);
-    cout << "Enter name of file: ";
+    cout << "\tEnter name of file: ";
     getline(cin, name);
-    cout << "Enter destination path: ";
+    cout << "\tEnter destination path: ";
     getline(cin, destination);
     CopingFile(source, name, destination);
 }
@@ -182,9 +170,9 @@ void FileManager::MovingFile()
 {
     cout << "Enter source path: ";
     getline(cin, source);
-    cout << "Enter name of file: ";
+    cout << "\tEnter name of file: ";
     getline(cin, name);
-    cout << "Enter destination path: ";
+    cout << "\tEnter destination path: ";
     getline(cin, destination);
     CopingFile(source, name, destination);
     fs::remove_all(source + '/' + name);
