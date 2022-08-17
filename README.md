@@ -2,7 +2,7 @@
 
 #Екзамен з теми "Файловий менджер" з використанням об'єктно - орієнтованого підходу (ООП) програмування на мові С++.
 
-#Exam on the topic "To - do list" using object-oriented programming (OOP) in the C++ language.
+#Exam on the topic "File Manager" using object-oriented programming (OOP) in the C++ language.
 
 #Щодо завдання:
 
